@@ -33,12 +33,11 @@ for i = 1:trnSize
     
     % detect SURF features within each image
     svm_trainingSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
-    
    
-    svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
+    %svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints));
+    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints, 'Upright', true));
     
 end
 
@@ -62,10 +61,10 @@ for i = 1:tstSize
     % detect SURF features within each image
     svm_testSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
 
-    svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
+    %svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints));
+    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints, 'Upright', true));
   
 end
 

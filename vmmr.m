@@ -37,7 +37,7 @@ for i = 1:trnSize
     %svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints, 'Upright', true, 'FeatureSize', 128));
+    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128));
     
 end
 
@@ -64,7 +64,7 @@ for i = 1:tstSize
     %svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints, 'Upright', true, 'FeatureSize', 128));
+    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128));
   
 end
 

@@ -32,13 +32,12 @@ for i = 1:trnSize
     svm_trainingSet(i).images = I;
     
     % detect SURF features within each image
-    %svm_trainingSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
-    svm_trainingSet(i).ke
+    svm_trainingSet(i).keypoints = detectKAZEFeatures(I);
    
-    svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
+    %svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints));
+    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints,'Method','KAZE','FeatureSize', 128));
     
 end
 
@@ -60,12 +59,12 @@ for i = 1:tstSize
     svm_testSet(i).images = I;
     
     % detect SURF features within each image
-    svm_testSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
+    svm_testSet(i).keypoints = detectKAZEFeatures(I);
 
-    svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
+    %svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints));
+    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints,'Method','KAZE', 'FeatureSize', 128));
   
 end
 
@@ -88,4 +87,4 @@ cv_svm_model = crossval(svm_model);
 %% display the results
 
 % use confusiom matrix to evalutate the results
-confMatrix = confusionmat(testLabels, predictedCars);
+confMatrix1 = confusionmat(testLabels, predictedCars);

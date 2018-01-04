@@ -1,13 +1,8 @@
-\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Introduction}{2}
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Preprocessing Tasks}{3}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}CCTV camera located at the side of a motor way}{3}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.1}CCTV camera placed at an angle}{3}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.2} Varying lighting conditions }{3}
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.1.3} Motion blur}{3}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {section}{\numberline {2}Preprocessing Tasks}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}CCTV camera located at the side of a motor way}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Skewing \& Rotation}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2} Brightness \& Colour Correction }{4}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.3} Motion blur removal}{4}{subsubsection.2.1.3}
+\contentsline {subsubsection}{\numberline {2.1.4}Shake Removal}{5}{subsubsection.2.1.4}
+\contentsline {section}{\numberline {3}Reference List}{6}{section.3}

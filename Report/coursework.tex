@@ -1,4 +1,4 @@
-\documentclass[a4paper, 16pt]{article}
+\documentclass[a4paper, 12pt]{article}
 
 % packages
 \usepackage{fancyhdr}
@@ -54,7 +54,10 @@ Another factor to consider is the lighting conditions. The reason being that, in
 
 Where $\alpha$ and $\beta$ are parameters which influence the contrast and brightness of the image and where $\alpha$ is greater than zero. 
 
-Alternatively, colour balancing and correction algorithms can be used to improve the illumination and contrast of the image. Gasparini and Schettini (2004) introduce a method of unsupervised color correction for removing colour cast. 
+Alternatively, colour balancing and correction algorithms can be used to improve the illumination and contrast of the image. Weng et al (2004) introduce a novel approach of improving white balance in still images. This algorithm is needed especially for images taken at night because, depending on the colour temperature of the street light. The image will appear reddish if the colour temperature of the light source is low, conversely, the image will appear blue if the colour temperature of the light source is high (Weng et al, 2014). Therefore, improving the white balance will make the image appear as though it was captured under canonical lighting. 
+\parskip 0.2in
+
+The proposed solution works in two stages that is, white point detection and white point adjustment. utilises a dynamic threshold for identifying white points within the image. The process begins by converting the image from the $RGB$ colour space to the  $YC_{b}C_{r}$. Depending on the colour characteristics, a near white region composed of several candidate reference white points is chosen. The candidate points are chosen by computing the mean values of $C_{b}$ and $C_{r}$ (Weng et al, 2014). The white reference points are then selected depending on the brightness values  of candidate white points (top 10 percent) near the white region. After the white reference points have been chosen, the Von Kries model is used to fine-tune the image. This model is used to scale each invidivual $R, G$ and $B$ channel separately. Channel gains are obtained from the average values of reference white points. Luminance is maintained throughout the image at the same intensity by using the maximum luminance value to compute channel gains. Each pixel value is adjusted by multiplying each pixel with teh computed gain (Weng et al, 2014). 
 
 \subsubsection{ Motion blur removal}
 
@@ -64,6 +67,20 @@ Motion blur is a phenomenon which occurs when there are inconsistencies between 
 Cho (2010) suggests the estimation of the blur kernel by examining edges within the blurred image. The edges within the blurred image encode estimations of the blur kernel from which the blur can be removed using the inverse radon transform. Using the edge information in this case will yield desirable results because, the object of interest is a man made object and man made objects consist of many edges. As a result of the loss of high frequency information, prior information concerning natural images is used to fill out the missing information. This is done using content aware image priors rather than sparse priors because, content aware prior adjusts its features to local textures and hence, it increases the quality of textures within the reconstructed images (Cho, 2010). After this has been completed, a maximum a posteriori (MAP) estimator is used to restore the image using piecewise smooth features, however, since the MAP does not always accurately reconstruct rich textures, IDR is used to improve the depiction of rich textures. 
 
 \subsubsection{Shake Removal}
+In the process of capturing images, the camera could be susceptible to shaking especially in windy conditions. This is a problem because, the camera shaking causes non-uniform blurring cannot be handled effectively by blind convolution algorithms (Hirsch et al, 2011). They suggest a fast single image  blind deconvolution algorithm which is a combination of both constraints of Projective Motion Path Blur (PMPB) models and the effectiveness of the Efficient Filter Flow (EFF) framework. In order to recover a sharper version of the image, EFF estimates a non-static blur as the total of various blur patches. The blur kernels are created using homographies. The homographies are then applied to a grid of pixels. This makes it possible to generate possible camera shakes via a combination of various homographies of a point grid (Hirsch et al, 2011). Different views of a point grid are created by using a homography. This splits the views into local blur kernels which are constrained to only linear combinations. 
+
+\parskip 0.2in
+Given a blurred image, an unknown sharp  image can be reconstructed in two steps: (1) blur estimation for non-stationary PSFs and (2) sharp image recovery through a non-blind deconvolution process suited to non-static blurs. The first step of the algorithm aims at retrieve the motion which the camera undertook during exposure provided only the blurry image. This involves a prediction phase, to lower the blur effect and improve image quality bilateral filtering, a blur parameter estimation phase to identify camera motion features which correctly describe the blurred image from the previous step and a latent image estimation using non-blind deconvolution (Hirsch et al, 2011). Blur parameters are approximated by finding the most appropriate non-static blur which converts the  immediate image estimate into the recorded blurry image. Sharp image updates are applied repeatedly during the blur estimation phase. After the blur parameters have been approximated and set, the final sharp image is reconstructed by replacing the image prior of the sharp image update phase with a more natural image prior which is formed on sparsity of gradient images (Hirsch et al, 2011). stationary non-blind deconvolution is then used in the non-stationary case to retrieve the sharp image. 
+
+\newpage
+\subsection{Dedicated camera installed at entrance to indoor car park}
+
+Similar to the CCTV camera located at the side of the road, this system is affected by certain factors which may affect the quality of the images captured by the camera although not as much as an outdoor system. For instance, location at which the camera is placed can be controlled and hence it is placed at the best location possible (that is, the entrance of the car park). 
+
+\subsubsection{Noise Removal}
+
+
+
 
 \newpage
 
@@ -75,11 +92,16 @@ Cho,T.,S. (2010). \textit{Motion blur removal from photographs.} Submitted to th
 Gonzalez, C., R., Woods, E., R. (2008). \textit{Digital Image Processing.} Upper Saddle River New Jersey: Pearson.
 \parskip 0.2in
 
+Hirsch, M., Schuler, C., Harmeling, S. and Scholkopf, B. (2011). Fast removal of non-uniform camera shake. 2011 International Conference on Computer Vision. [online] Available from: \url{http://ieeexplore.ieee.org/document/6126276/} [Accessed 5 Jan. 2018].
+\parskip 0.2in
+
 Patel, J., Shah, A., Patel, H. (2015). Skew Angle Detection and Correction using Radon Transform. \textit{International Journal of Electronics, Electrical and Computational System.} [Online] Volume 4 (May) Available from: \url{http://academicscience.co.in/admin/resources/project/paper/f201505101431314896.pdf}. [Accessed: 2nd January 2018].
 \parskip 0.2in
 
 Szeliski, R. (2010). \textit{Computer Vision: Algorithms and Applications.} New York: Springer.
 \parskip 0.2in
+
+Weng, C., C. Homer, C. Fuh, C., S. A Novel Automatic White Balance Method For Digital Still Cameras. 2005 IEEE International Symposium on Circuits and Systems. [online] Available from: \url{http://ieeexplore.ieee.org/abstract/document/1465458/} [Accessed 4 Jan. 2018].
 
 
 \end{document}

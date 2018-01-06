@@ -75,33 +75,57 @@ Given a blurred image, an unknown sharp  image can be reconstructed in two steps
 \newpage
 \subsection{Dedicated camera installed at entrance to indoor car park}
 
-Similar to the CCTV camera located at the side of the road, this system is affected by certain factors which may affect the quality of the images captured by the camera although not as much as an outdoor system. For instance, location at which the camera is placed can be controlled and hence it is placed at the best location possible (that is, the entrance of the car park). 
+Similar to the CCTV camera located at the side of the road, this system is affected by certain factors which may affect the quality of the images captured by the camera although not as much as an outdoor system. For instance, location at which the camera is placed can be controlled and hence it is placed at the best location possible (that is, the entrance of the car park).
 
 \subsubsection{Noise Removal}
 
+Noisy images might be a problem that may be experienced with images taken in camera located in the indoor car park. This noise occurs as a result of arbitrary variances in image intensities which appear as grains in the image (Kaur, 2015) . Noise is undesirable because it distorts the image signal and reduces the image quality. Kaur (2015) explains some primary sources of noise in images. These include poor light levels and the temperature of the sensor, electromagnetic transmission of the image data, effects of the environment on the image sensor, introduction of noise by the mechanism capturing image data in digital format, dust particles present on scanner screen. Noise can be removed using various techniques however the technique explained in this report is filtering (linear and non-linear). 
+\parskip 0.2in
+
+Linear filters eliminate certain types of noise by convolving the noisy image with a kernel which serves as a low pass filter (Kaur, 2015). Non-linear filtering on the other hand, produces an output which is not a linear function of its input. Using a gaussian filter to remove noise will be a viable solution however, the problem with using a gaussian filter is that, although it removes the noise, it also blurs the sharp edges and destroys useful details within the image. Therefore, using non-linear filtering is a much better solution because, non-linear filters preserve the image details in the image. For this scenario the preferred filtering technique is using a median filter. Median filters work by using a sliding window principle over the image matrix and replaces pixel values with the median value of neighbouring values. Initially, all pixels values are arranged from neighbourhood to numerical order. The pixel being considered the middle pixel value is then replaced (Kaur, 2015). Moreover, the median filter although simple, is very powerful and easy to implement. 
+
+\subsubsection{Improving Low resolution images}
+
+Assuming that the camera being used captures low resolution images, it is essential that the quality of the images are improved before being passed to the next phase. Similar to noise removal, there are various methods of improving the image quality. however in this scenario, Freeman et al (2002) present a method of improving image quality using super-resolution. Their approach involves using interpolation algorithms to generate tenable high frequency details in zoomed images from a database of training images. This can be used to enhance the quality of low resolution images. 
+\parskip 0.2in
+
+The algorithm works by upscaling the images using cubic spline interpolation and downscaling using convolution with a [0.25 0.5 0.25] filter and subsampling
+when indicies obtained are even. The super-resolution algorithm then anticipates the next octave up that is, the lost frequencies from the image using cubic interpolation. The result the algorithm produces is total of the inputs and high frequency estimates. The high frequencies are estimated for $M$ x $N$ patches in raster scan order (Freeman et al, 2002). The algorithm functions under the presumption that, the association between high and low frequency patches is not affected by contrast, hence each patch is normalised by the median absolute value of the low frequency patches in the colour channels. These frequency patches are then merged together to form a vector that is used to search for matches in the training set. The matching is accomplished by locating the closest neighbour. When matches are located, the contrast normalisation is undone on the matching high frequency patch and that patch is added to the output image.  
 
 
+\subsubsection{ Removal of Barrelling Effect}
+
+According to Gribbon et al (2003), The barrelling effect also known as barrel distortion is a phenomenon which happens when the center of magnification of the lens is more prominent than at the boundaries (edges) of the lens.
+ 
 
 \newpage
 
 \section{Reference List} 
 
 Cho,T.,S. (2010). \textit{Motion blur removal from photographs.} Submitted to the Department of Electrical Engineering and Computer Science in partial fulfilment of the requirements for the degree of Doctor of Philosophy in Electrical Engineering and Computer Science. Cambridge Massachusetts: Massachusetts Institute of Technology.
-\parskip 0.2in 
+ 
+Freeman, W., J., T., Jones, T., R.,  Pasztor, E., C. (2002). Example-based super-resolution. \textit{IEEE Computer Graphics and Applications}, [Online] 22(2), pp.56-65. Available from: \url{http://ieeexplore.ieee.org/document/988747/} [Accessed 6 Jan. 2018].
 
 Gonzalez, C., R., Woods, E., R. (2008). \textit{Digital Image Processing.} Upper Saddle River New Jersey: Pearson.
-\parskip 0.2in
+
+Gribbon, K. T., Johnston, C. T., and Bailey, D.
+G. \textit{A Real-time FPGA Implementation of a
+Lens Distortion Correction Algorithm with
+Bilinear Interpolation.} Proceedings of the
+Image and Vision Computing New Zealand
+Conference 2003, Massey University,
+Palmerston North, New Zealand, Nov. 2003. pp. 408-413,
 
 Hirsch, M., Schuler, C., Harmeling, S. and Scholkopf, B. (2011). Fast removal of non-uniform camera shake. 2011 International Conference on Computer Vision. [online] Available from: \url{http://ieeexplore.ieee.org/document/6126276/} [Accessed 5 Jan. 2018].
-\parskip 0.2in
+
+Kaur, S. (2015). Noise Types and Various Removal Techniques. \textit{International Journal of Advanced Research in Electronics and Communication Engineering (IJARECE). 4(2).} [Online] p.226-229. Available from \url{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.683.6783&rep=rep1&type=pdf
+} [Accessed 5th January 2018].
 
 Patel, J., Shah, A., Patel, H. (2015). Skew Angle Detection and Correction using Radon Transform. \textit{International Journal of Electronics, Electrical and Computational System.} [Online] Volume 4 (May) Available from: \url{http://academicscience.co.in/admin/resources/project/paper/f201505101431314896.pdf}. [Accessed: 2nd January 2018].
-\parskip 0.2in
 
 Szeliski, R. (2010). \textit{Computer Vision: Algorithms and Applications.} New York: Springer.
-\parskip 0.2in
 
-Weng, C., C. Homer, C. Fuh, C., S. A Novel Automatic White Balance Method For Digital Still Cameras. 2005 IEEE International Symposium on Circuits and Systems. [online] Available from: \url{http://ieeexplore.ieee.org/abstract/document/1465458/} [Accessed 4 Jan. 2018].
+Weng, C., C. Homer, C. Fuh, C., S. A Novel Automatic White Balance Method For Digital Still Cameras. 2005 \textit{IEEE International Symposium on Circuits and Systems.} [Online] Available from: \url{http://ieeexplore.ieee.org/abstract/document/1465458/} [Accessed 4 Jan. 2018].
 
 
 \end{document}

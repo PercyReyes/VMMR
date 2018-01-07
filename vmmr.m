@@ -31,13 +31,15 @@ for i = 1:trnSize
     % store processed images in training set for the 
     svm_trainingSet(i).images = I;
     
+    svm_trainingSet(i).labels = dbtrainingSet.Labels(i);
+    
     % detect SURF features within each image
     svm_trainingSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
    
-    %svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
+    svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    training_features(i,:) = sum(extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128));
+    svm_trainingSet(i).features = extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128);
     
 end
 
@@ -58,25 +60,31 @@ for i = 1:tstSize
     % store processed images in training set for the 
     svm_testSet(i).images = I;
     
+    svm_testSet(i).labels = dbtestSet.Labels(i);
+    
     % detect SURF features within each image
     svm_testSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
 
-    %svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
+    svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
     
     % extract SURF features from image
-    test_features(i,:) = sum(extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128));
+    svm_testSet(i).features = extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128);
   
 end
 
 
+
 %% obtain the training labels
 
-trainingLabels = dbtrainingSet.Labels;
-testLabels = dbtestSet.Labels;
+%trainingLabels = dbtrainingSet.Labels;
+%testLabels = dbtestSet.Labels;
 
 %% -------- Train the svm classifier ---------------%
-svm_model = fitcecoc(training_features, trainingLabels);
+for i = 1:trnSize
+    svm_model = fitcecoc(svm_trainingSet(i).features, svm_trainingSet(i).labels);
+end
 
+%{
 % cross validate classifier 
 cv_svm_model = crossval(svm_model);
 
@@ -88,3 +96,5 @@ cv_svm_model = crossval(svm_model);
 
 % use confusiom matrix to evalutate the results
 confMatrix = confusionmat(testLabels, predictedCars);
+
+%}

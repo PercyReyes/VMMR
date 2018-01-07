@@ -5,6 +5,7 @@
 \usepackage{setspace}
 \usepackage{parskip}
 \usepackage{hyperref}
+\usepackage{xfrac}
 
 
 \begin{document}
@@ -95,9 +96,30 @@ when indicies obtained are even. The super-resolution algorithm then anticipates
 
 \subsubsection{ Removal of Barrelling Effect}
 
-According to Gribbon et al (2003), The barrelling effect also known as barrel distortion is a phenomenon which happens when the center of magnification of the lens is more prominent than at the boundaries (edges) of the lens.
- 
+According to Gribbon et al (2003), The barrelling effect also known as barrel distortion is a phenomenon which happens when the magnification of the lens reduces with axial distance and hence, resulting in rapid movement of image points in the direction of the image centre. Gribbon et al (2003) define the barrel distortion model as: 
+\begin{center}
+ $r_{u} = r_{d}(I+kr^{2}_{d})$.
+\end{center}
 
+Where $r_{d}$ and $r_{u}$  represent the lengths from the centre of the distorted and undistorted images. The barrel distortion algorithm works by calculating the position of the pixel within the barrelled image. After computation, the resulting coordinates are seldom integers. This problem is solved using bilinear interpolation. The barrel model presents the pixel positions (coordinates) of the undistorted image as a function of the pixel positions of the distorted image, however Gribbon et al (2003) argue that, this representation is not suitable for correcting the distortion in real time, because, the output of the undistorted pixels must be in raster scan order. Therefore, the coordinates of the image without barrelling must be used to decide the pixel to display in the distorted image. Hence the first equation is rewritten in terms of a radial independent magnification with a magnification factor $M$. This can be seen below: 
+
+\begin{center}
+$M = \frac{1}{1+kM^2r^{2}_{d}}$
+\end{center}
+
+The equation above is used to solve for $M$ repetitively until $M$ moves or converges towards the required precision (Gribbon et al, 2003). Bilinear interpolation was implemented by shortening the computed coordinates by rejecting the fractional element. This leads to rounding errors in the pixel location and hence produces artefacts. The algorithm derives the pixel values by computing the weighted sum of pixel values of four nearest neighbours surrounding the computed coordinates (Gribbon et al, 2003). 
+
+
+\subsubsection{Contrast Stretching}
+Images captured from the entrance of the car park may contain night glare caused by the light emerging out of the headlights of the car. This glare effect is undesirable because, it can result in an image having poor contrast. A solution to this problem is to use contrast stretching. Contrast stretching aims to enhance the contrast by expanding the range of intensity values within the image across the range of pixels allowed by the input image (Fisher et al, 2003). To perform contrast stretching first, the lower and upper pixel limits which determine the pixel range for the normalisation process must be defined. The image is then scanned to identify the highest and lowest pixel values within the image. Suppose that the lower and upper pixel limits are $i$ and $j$ respectively and the highest and lowest pixel values are $k$ and $l$ respectively, it is possible to scale each pixel using the following equation (Fisher et al, 2003): 
+
+\begin{center}
+$P_{out} = (P_{in}-l)\frac{j-i}{k-l} + a$
+\end{center}
+
+This function faces a problem where outlying pixels that is, pixels with either very low or very high intensities can lead to unnatural scaling. As a result, a more efficient approach will be to use the histogram of the image to obtain the $k$ and $l$ values approximately at the 5th and 95th percentile as this stops outlying pixels from over-scaling (Fisher et al, 2003). Alternatively, outliers could be dealt with by using intensity histograms to locate the most common pixel intensity values and then defining a threshold value at which any value below the threshold will be neglected. After this the intensity histogram is traversed from zero to the first intensity value which is above the defined threshold value. This value is then set to $l$ Furthermore, the  intensity histogram is then traversed downwards from 255 till the first intensity value above the threshold value. This value is then set to $k$.
+
+\section{The proposed VMMR system}
 \newpage
 
 \section{Reference List} 
@@ -105,6 +127,8 @@ According to Gribbon et al (2003), The barrelling effect also known as barrel di
 Cho,T.,S. (2010). \textit{Motion blur removal from photographs.} Submitted to the Department of Electrical Engineering and Computer Science in partial fulfilment of the requirements for the degree of Doctor of Philosophy in Electrical Engineering and Computer Science. Cambridge Massachusetts: Massachusetts Institute of Technology.
  
 Freeman, W., J., T., Jones, T., R.,  Pasztor, E., C. (2002). Example-based super-resolution. \textit{IEEE Computer Graphics and Applications}, [Online] 22(2), pp.56-65. Available from: \url{http://ieeexplore.ieee.org/document/988747/} [Accessed 6 Jan. 2018].
+
+Fisher, R., Perkins, S., Walker, A., Wolfart, E. (2003). \textit{Contrast Stretching}. [Online]. Available from: \url{https://homepages.inf.ed.ac.uk/rbf/HIPR2/stretch.htm} [Accessed 7th January 2018].
 
 Gonzalez, C., R., Woods, E., R. (2008). \textit{Digital Image Processing.} Upper Saddle River New Jersey: Pearson.
 

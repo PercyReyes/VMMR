@@ -1,100 +1,48 @@
-%% build the path to the training set  & test set.
 
-trndbPath = fullfile('Coursework Database', 'Training Set');
-testdbPath = fullfile('Coursework Database', 'Test Set');
+%% build the path to the databse and create an image datastore containing images
 
-%% Load training and test data uisng |iamgeDataStore|.
+dbpath = fullfile('Coursework Database');
+imds = imageDatastore(dbpath, 'IncludeSubfolders', true, 'LabelSource', 'foldernames');
 
-dbtrainingSet = imageDatastore(trndbPath, 'IncludeSubfolders', true, 'LabelSource', 'foldernames');
-dbtestSet = imageDatastore(testdbPath, 'IncludeSubfolders', true, 'LabelSource', 'foldernames');
+%% inspect datastore to see the number of images per category. 
 
-%% get the size of training set and test set to loop through both sets
+tbl = countEachLabel(imds);
 
-trnSize = numel(dbtrainingSet.Files);
-tstSize = numel(dbtestSet.Files);
+%% Preapare training and validation image sets
 
-%%---------- For training set ----------------- %
-svm_trainingSet = struct('images',cell(1), 'keypoints', cell(1));
-svm_testSet = struct('images', cell(1), 'keypoints', cell(1));
-
-for i = 1:trnSize
-    
-    % read in every image from the training dataset
-    I = readimage(dbtrainingSet, i);
-    
-    % convert image to grayscale
-    I = rgb2gray(I);
-    
-    % resize image to 99x264
-    I = imresize(I, [99 264]);
-    
-    % store processed images in training set for the 
-    svm_trainingSet(i).images = I;
-    
-    svm_trainingSet(i).labels = dbtrainingSet.Labels(i);
-    
-    % detect SURF features within each image
-    svm_trainingSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
-   
-    svm_trainingSet(i).keypoints = svm_trainingSet(i).keypoints.selectStrongest(50);
-    
-    % extract SURF features from image
-    svm_trainingSet(i).features = extractFeatures(svm_trainingSet(i).images, svm_trainingSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128);
-    
-end
-
-
-%% ------------------ For test set ------------------ %
-
-for i = 1:tstSize
-    
-    % read in every image from the training dataset
-    I = readimage(dbtestSet, i);
-    
-    % convert image to grayscale
-    I = rgb2gray(I);
-    
-    % resize image to 99x264
-    I = imresize(I, [99 264]);
-    
-    % store processed images in training set for the 
-    svm_testSet(i).images = I;
-    
-    svm_testSet(i).labels = dbtestSet.Labels(i);
-    
-    % detect SURF features within each image
-    svm_testSet(i).keypoints = detectSURFFeatures(I, 'MetricThreshold', 2000);
-
-    svm_testSet(i).keypoints = svm_testSet(i).keypoints.selectStrongest(50);
-    
-    % extract SURF features from image
-    svm_testSet(i).features = extractFeatures(svm_testSet(i).images, svm_testSet(i).keypoints,'Method','SURF', 'Upright', true, 'FeatureSize', 128);
-  
-end
-
-
-
-%% obtain the training labels
-
-%trainingLabels = dbtrainingSet.Labels;
-%testLabels = dbtestSet.Labels;
-
-%% -------- Train the svm classifier ---------------%
-for i = 1:trnSize
-    svm_model = fitcecoc(svm_trainingSet(i).features, svm_trainingSet(i).labels);
-end
+% separate the dataset into training and validation set 80% of the image
+% set is used for training and the remaining 20% is used for testing. 
+[trainingSet, validationSet] = splitEachLabel(imds, 0.8, 'randomize');
 
 %{
-% cross validate classifier 
-cv_svm_model = crossval(svm_model);
+AudiA3 = find(trainingSet.Labels == 'Audi A3',1);
+AudiA4 = find(trainingSet.Labels == 'Audi A4',1);
+AudiA6 = find(trainingSet.Labels == 'Audi A6',1);
+
+subplot(1,3,1); 
+imshow(readimage(trainingSet, AudiA3))+
 
 
-%% make predictions based on test images 
-[predictedCars, score] = predict(svm_model, test_features);
 
-%% display the results
-
-% use confusiom matrix to evalutate the results
-confMatrix = confusionmat(testLabels, predictedCars);
-
+subplot(1,3,2);
+imshow(readimage(trainingSet, AudiA4))
+subplot(1,3,3);
+imshow(readimage(trainingSet, AudiA6))
 %}
+
+%%  create visual bag of features from the training data. 
+
+bag = bagOfFeatures(trainingSet, 'VocabularySize', 5000, 'Upright',true);
+
+%% train the image classifier
+vmmr_classifier = trainImageCategoryClassifier(trainingSet, bag);
+
+
+%% use confusion matrix to evaluate the classifier  with training data
+% and then with test data
+
+confMatrix = evaluate(vmmr_classifier, trainingSet);
+
+confMatrix = evaluate(vmmr_classifier, validationSet);
+
+mean(diag(confMatrix));

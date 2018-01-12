@@ -17,7 +17,7 @@ tbl = countEachLabel(imds);
 
 %%  create visual bag of features from the training data. 
 
-bag = bagOfFeatures(trainingSet, 'VocabularySize', 5000, 'Upright',true, 'StrongestFeatures', 1, 'PointSelection', 'Detector');
+bag = bagOfFeatures(trainingSet, 'VocabularySize', 5000, 'Upright',true 'StrongestFeatures', 1);
 
 %% train the image classifier
 vmmr_classifier = trainImageCategoryClassifier(trainingSet, bag);

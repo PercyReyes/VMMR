@@ -1,0 +1,11 @@
+
+%% obtain path to new dataset 
+
+newSetPath = fullfile('New Dataset');
+
+%% create image datastore of new dataset
+
+new_dataset = imageDatastore(newSetPath);
+
+[labelIdx,score] = predict(categoryClassifier,)
+

@@ -7,7 +7,7 @@
 \BOOKMARK [3][-]{subsubsection.2.1.4}{Shake Removal}{subsection.2.1}% 7
 \BOOKMARK [2][-]{subsection.2.2}{Dedicated camera installed at entrance to indoor car park}{section.2}% 8
 \BOOKMARK [3][-]{subsubsection.2.2.1}{Noise Removal}{subsection.2.2}% 9
-\BOOKMARK [3][-]{subsubsection.2.2.2}{Improving Low resolution images}{subsection.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Improving low resolution images}{subsection.2.2}% 10
 \BOOKMARK [3][-]{subsubsection.2.2.3}{ Removal of Barrelling Effect}{subsection.2.2}% 11
 \BOOKMARK [3][-]{subsubsection.2.2.4}{Contrast Stretching}{subsection.2.2}% 12
 \BOOKMARK [1][-]{section.3}{The proposed VMMR system}{}% 13
@@ -21,8 +21,14 @@
 \BOOKMARK [3][-]{subsubsection.3.1.7}{Results}{subsection.3.1}% 21
 \BOOKMARK [2][-]{subsection.3.2}{System Design}{section.3}% 22
 \BOOKMARK [3][-]{subsubsection.3.2.1}{Loading the images}{subsection.3.2}% 23
-\BOOKMARK [3][-]{subsubsection.3.2.2}{Feature detection algorithm}{subsection.3.2}% 24
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Detection of SURF features}{subsection.3.2}% 24
 \BOOKMARK [3][-]{subsubsection.3.2.3}{Extraction of SURF features}{subsection.3.2}% 25
 \BOOKMARK [3][-]{subsubsection.3.2.4}{Creation of Bag of Features}{subsection.3.2}% 26
-\BOOKMARK [1][-]{section.4}{ Experiments and Results }{}% 27
-\BOOKMARK [1][-]{section.5}{Reference List}{}% 28
+\BOOKMARK [3][-]{subsubsection.3.2.5}{Training the classifier}{subsection.3.2}% 27
+\BOOKMARK [3][-]{subsubsection.3.2.6}{Testing the classifier}{subsection.3.2}% 28
+\BOOKMARK [1][-]{section.4}{ Experiments and Results }{}% 29
+\BOOKMARK [2][-]{subsection.4.1}{Experimental Design}{section.4}% 30
+\BOOKMARK [2][-]{subsection.4.2}{ Results from experiments }{section.4}% 31
+\BOOKMARK [2][-]{subsection.4.3}{ Analysis of the results}{section.4}% 32
+\BOOKMARK [2][-]{subsection.4.4}{Conclusion}{section.4}% 33
+\BOOKMARK [1][-]{section.5}{Reference List}{}% 34
